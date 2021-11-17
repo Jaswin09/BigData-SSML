@@ -35,7 +35,7 @@ def connectTCP():   # connect to the TCP server -- there is no need to modify th
     print(f"Connected to {address}")
     return connection, address
 
-
+'''
 # separate function to stream CIFAR batches since the format is different
 def sendCIFARBatchFileToSpark(tcp_connection, input_batch_file):
     # load the entire dataset
@@ -123,7 +123,7 @@ def streamPokemonDataset(tcp_connection, dataset_type='pokemon'):
     print("Starting to stream Pokemon data")
     POKEMON_BATCHES = [
         'train_batch_1',
-        # 'train_batch_2',   # uncomment to stream the second training dataset
+        #'train_batch_2',   # uncomment to stream the second training dataset
         # 'train_batch_3',   # uncomment to stream the third training dataset
         # 'train_batch_4',   # uncomment to stream the fourth training dataset
         # 'train_batch_5',    # uncomment to stream the fifth training dataset
@@ -133,23 +133,22 @@ def streamPokemonDataset(tcp_connection, dataset_type='pokemon'):
         sendPokemonBatchFileToSpark(tcp_connection, batch)
         time.sleep(1)
 
-
+'''
 def streamDataset(tcp_connection, dataset_type):    # function to stream a dataset
     # this is the function you need to recreate to work with custom datasets
     # if your dataset has multiple files (train, test, etc), modify and use this function to stream your dataset
     print(f"Starting to stream {dataset_type} dataset")
     DATASETS = [    # list of files in your dataset to stream
-        "train",
-        # "test"    # uncomment to stream the test dataset
+        #"train",
+         "test"    # uncomment to stream the test dataset
     ]
     for dataset in DATASETS:
         streamCSVFile(tcp_connection, f'{dataset_type}/{dataset}.csv')
         time.sleep(1)
 
-
 def streamCSVFile(tcp_connection, input_file):    # stream a CSV file to Spark
-    '''
-    Each batch is streamed as a JSON file and has the following shape. 
+    
+    '''Each batch is streamed as a JSON file and has the following shape. 
     The outer indices are the indices of each row in a batch and go from 0 - batch_size-1
     The inner indices are the indices of each column in a row and go from 0 - feature_size-1
 
@@ -179,16 +178,16 @@ def streamCSVFile(tcp_connection, input_file):    # stream a CSV file to Spark
     df = pd.read_csv(input_file)  # load the entire dataset
     values = df.values.tolist()  # obtain the values of the dataset
     # loop through batches of size batch_size lines
-    for i in tqdm(range(0, len(values)-batch_size+1, batch_size)):
+    for i in tqdm(range(0, len(values)-batch_size+2, batch_size)):
         send_data = values[i:i+batch_size]  # load batch of rows
-        payload = dict()    # create a payload
+        payload = []    # create a payload
         # iterate over the batch
         for mini_batch_index in range(len(send_data)):
-            payload[mini_batch_index] = dict()  # create a record
+            doc={}
+            doc['sentiment']=send_data[mini_batch_index][0]
+            doc['tweet']=send_data[mini_batch_index][1]
+            payload.append(doc)  # create a record
             # iterate over the features
-            for feature_index in range(len(send_data[0])):
-                # add the feature to the record
-                payload[mini_batch_index][f'feature{feature_index}'] = send_data[mini_batch_index][feature_index]
         # print(payload)    # uncomment to see the payload being sent
         # encode the payload and add a newline character (do not forget the newline in your dataset)
         send_batch = (json.dumps(payload) + '\n').encode()
@@ -198,17 +197,15 @@ def streamCSVFile(tcp_connection, input_file):    # stream a CSV file to Spark
             print("Either batch size is too big for the dataset or the connection was closed")
         except Exception as error_message:
             print(f"Exception thrown but was handled: {error_message}")
-        time.sleep(1)
+        time.sleep(5)
 
-
+'''
 def streamFile(tcp_connection, input_file):  # stream a newline delimited file to Spark
-    '''
     Each batch is streamed as newline delimited text and has the following shape.
 
     line1\n
     line2\n
     ...
-    '''
     with open(input_file, 'r') as file:
         data = file.readlines()  # open the file and read every line
         total_lines = len(data)
@@ -224,7 +221,7 @@ def streamFile(tcp_connection, input_file):  # stream a newline delimited file t
             except Exception as error_message:
                 print(f"Exception thrown but was handled: {error_message}")
             time.sleep(1)
-
+'''
 
 if __name__ == '__main__':
     args = parser.parse_args()
