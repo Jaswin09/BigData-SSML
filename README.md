@@ -3,14 +3,18 @@ Spark Streaming for Machine Learning
 
 Design Details: 
 Importing libraries: We start by importing libraries like sparkcontext, streaming context, spark session, reg exp, and so on. 
+
 Streaming: Data streaming refers to the process of obtaining data from a csv file and transferring it to our working environment for preparation. 
+
 Preprocessing: We clean the model here to get nice clean data for forecasting results by removing undesirable words, emojis, and spaces. Emoji remover, stopword removal, tokenizing, steaming, and hashing are some of the approaches we utilise. 
+
 Model construction: To improve the accuracy of the results, we use different types of models such as MultinomialNB, Preceptron, and Multinomial, and we use the results to get: accuracy (we add the results of each model cumulatively to increase the accuracy without overfitting or underfitting the results), graph (we plot the graph using the output of the models to compare the accuracy of each model), clustering (we split the data (tweets) into two parts as positive and negative so that we can compare). 
  
  
  
  
 Surface Level Implementation: 
+
 Importing lib: We import required lib for processing of data. 
  
 Streaming: We stream data to get the tweets for processing. We get data from a csv file and transmitting it to our working environment for preparation. 
