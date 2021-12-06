@@ -41,11 +41,17 @@ For each model, plotted total accuracy, recall, and precision.
  
  
 Reason behind design decisions: 
+
 Importing libraries: We used the pyspark library since it allows us to develop Spark apps with Python APIs. 
+
 Streaming: Data streams have been employed because they allow us to extract and process data in real-time. 
+
 Preprocessing: We preprocessed the dataset to convert the raw data into a clean data set because analysing data in raw format is impossible. 
+
 Model construction: We developed a model that can predict if a tweet is sentimentally pleasant or negative. 
+
 Graph: We utilised graphs to graphically show the model's results. 
+
 Clustering: Used to classify data into structures that are simple to comprehend and manipulate. 
  
 Takeaway from project: 
