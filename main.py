@@ -39,6 +39,7 @@ except Exception as e:
 	print(e)
 
 ssc.start()
-time.sleep(5000)
+#time.sleep(5000)
+ssc.awaitTermination()
 ssc.stop(stopSparkContext=False)
 
