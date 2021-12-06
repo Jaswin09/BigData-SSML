@@ -1,5 +1,6 @@
 # BigData-SSML
 Spark Streaming for Machine Learning
+
 Design Details: 
 Importing libraries: We start by importing libraries like sparkcontext, streaming context, spark session, reg exp, and so on. 
 Streaming: Data streaming refers to the process of obtaining data from a csv file and transferring it to our working environment for preparation. 
