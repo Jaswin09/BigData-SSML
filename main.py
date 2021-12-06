@@ -10,12 +10,12 @@ from pyspark.sql.types import StringType
 from models import *
 from model_train import *
 from feature_extract import *
+
 sc = SparkContext.getOrCreate()
 #sc.setLogLevel("OFF")
 ssc = StreamingContext(sc, 1)
 spark=SparkSession(sc)
-data = ssc.socketTextStream("localhost", 6100)
-print(data)
+d = ssc.socketTextStream("localhost", 6100)
 
 try:
 	def readMyStream(rdd):
@@ -24,6 +24,7 @@ try:
 			df=preprocess_transform(df)
 			x,y=features(df)
 			model_train(x,y)
+			clustering(x)
 			print()
 		
 		
@@ -32,7 +33,7 @@ except Exception as e:
 
 
 try:
-	data.foreachRDD(lambda rdd: readMyStream(rdd))
+	d.foreachRDD(lambda rdd: readMyStream(rdd))
 	
 except Exception as e:
 	print(e)

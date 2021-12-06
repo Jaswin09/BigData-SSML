@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 def model_train(x,y):
 	#x=df.select('vectors').rdd.flatMap(lambda x: x).collect()
@@ -46,4 +47,10 @@ def model_train(x,y):
 	#pickle.dump(clf,open(f2,'wb'))
 	pickle.dump(pac,open(f3,'wb'))
 	pickle.dump(model,open(f4,'wb'))
+	
+def clustering(x):
+	kmeans = MiniBatchKMeans(n_clusters=2,random_state=0)
+	kmeans = kmeans.partial_fit(x)
+	f="kmeans_model"
+	pickle.dump(kmeans,open(f,'wb'))
 
